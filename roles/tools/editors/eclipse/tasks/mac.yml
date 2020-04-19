@@ -1,0 +1,5 @@
+- name: Install eclipse-java
+  homebrew_cask:
+    name:
+      - eclipse-java
+    state: present

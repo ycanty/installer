@@ -1,0 +1,32 @@
+# Enable installation of i386 packages
+- name: Check if i386 is enabled
+  shell: dpkg --print-foreign-architectures | grep i386
+  register: result_i386_check
+  changed_when: result_i386_check.rc == 1
+  failed_when: result_i386_check.rc > 1
+
+- name: Enable i386 architecture
+  command: dpkg --add-architecture i386
+  when: result_i386_check.rc == 1
+
+# curl is used by elxtools scripts, but generally useful anyway
+# graphviz is used by plantuml intellij/eclipse plugins
+# rpm is useful to inspect our generated rpms
+# ncdu is a lightweight CLI disk space analyzer
+- name: Install useful utilities
+  apt:
+    name: [ "curl", "graphviz", "rpm", "dos2unix", "ncdu", "sshpass", "p7zip-full", "mc", "jq" ]
+    install_recommends: no
+
+# Some vagrant base boxes are not set to our timezone
+- name: Set timezone
+  timezone:
+    name: America/Toronto
+  register: timezone
+
+# Recommended for cron to see new timezone
+- name: Restart crond
+  service:
+    name: cron
+    state: restarted
+  when: timezone.changed

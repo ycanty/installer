@@ -1,0 +1,6 @@
+- name: Install musicbrainz-picard
+  homebrew_cask:
+    name:
+      - musicbrainz-picard
+    state: present
+    install_options: force

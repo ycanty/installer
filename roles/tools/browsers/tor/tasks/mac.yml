@@ -1,0 +1,6 @@
+- name: Install tor browser
+  homebrew_cask:
+    name:
+      - tor-browser
+    state: present
+    install_options: force

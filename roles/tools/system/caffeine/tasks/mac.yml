@@ -1,0 +1,6 @@
+- name: Install caffeine
+  homebrew_cask:
+    name:
+      - caffeine
+    state: present
+    install_options: force

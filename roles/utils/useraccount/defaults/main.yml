@@ -1,0 +1,2 @@
+user.name: "{{ lookup('env', 'USER') }}"
+ssh_config_dir: "/ssh_config/"

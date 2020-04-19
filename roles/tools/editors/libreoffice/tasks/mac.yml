@@ -1,0 +1,6 @@
+- name: Install libreoffice
+  homebrew_cask:
+    name:
+      - libreoffice
+    state: present
+    install_options: force

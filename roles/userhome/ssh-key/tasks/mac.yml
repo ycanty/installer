@@ -1,0 +1,19 @@
+- name: create user's .ssh directory
+  file:
+    path: "{{ user.home }}/.ssh"
+    state: directory
+    owner: "{{ user.name }}"
+    mode: u+rwx,og-rwx
+
+- name: Create ssh key if it doesn't exist
+  shell: ssh-keygen -q -t rsa -f {{ user.home }}/.ssh/id_rsa -C "" -N ""
+  args:
+    creates: "{{ user.home }}/.ssh/id_rsa"
+
+# Works only in ansible 2.8+
+# - name: Create ssh key if it doesn't exist
+#   openssh_keypair:
+#     path: "{{ user.home}}/.ssh/id_rsa"
+#     type: rsa
+#     size: 4096
+#     force: no

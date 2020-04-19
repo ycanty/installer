@@ -1,0 +1,20 @@
+- name: Install go and utilities
+  homebrew:
+    name:
+        - go
+    state: present
+
+- name: Add GOPATH/bin to user's PATH
+  lineinfile:
+    path: "{{ item.path }}"
+    line: "{{ item.line }}"
+    regexp: "^.*{{ item.regexp }}\\s*$"
+    state: present
+    create: yes
+  with_items:
+    - { regexp: "# go-bin-path", line: "export PATH=$(go env GOPATH)/bin:${PATH} # go-bin-path", path: "{{ user.home }}/.bash_profile" }
+    - { regexp: "# go-bin-path", line: "export PATH=$(go env GOPATH)/bin:${PATH} # go-bin-path", path: "{{ user.home }}/.zshrc" }
+
+- name: Install extra go modules
+  shell: go get {{ item }}
+  with_items: "{{ go_get_modules }}"

@@ -1,0 +1,7 @@
+- name: Install virtualbox
+  homebrew_cask: 
+    name:
+      - virtualbox
+      - virtualbox-extension-pack
+    state: present
+    install_options: force

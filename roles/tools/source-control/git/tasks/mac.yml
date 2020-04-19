@@ -1,0 +1,28 @@
+- name: Install git
+  homebrew:
+    name: git
+    state: present
+
+- name: Setup git config
+  git_config:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    scope: global
+  with_items:
+    - { name: 'url."git@github.com:".insteadOf', value: "https://github.com/" }
+    - { name: "credential.helper", value: "osxkeychain" }
+    - { name: "user.name", value: "{{ user.name }}" }
+    - { name: "user.email", value: "{{ user.email }}" }
+    - { name: "core.autocrlf", value: "input" }
+    - { name: "alias.co", value: "checkout" }
+    - { name: "alias.st", value:  "status" }
+    - { name: "alias.br", value: "branch" }
+    - { name: "alias.lsi", value:  "diff --cached --name-only --diff-filter=ACDMRTXB" }
+    - { name: "alias.lsm", value:  "ls-files -m" }
+    - { name: "alias.lsd", value:  "ls-files -d" }
+    - { name: "alias.lsu", value:  "ls-files --others --exclude-standard" }
+    - { name: "alias.lsum", value:  "!git diff --name-status --diff-filter=U | cut -f2" }
+    - { name: "alias.lgf", value:  'log --no-merges --date-order --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an - %ae>%Creset" --abbrev-commit --date=relative' }
+    - { name: "alias.lg", value:  "log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an - %ae>%Creset' --abbrev-commit --date=relative" }
+    - { name: "branch.autoSetupMerge", value: "always" }
+    - { name: "core.editor", value: "vim -f"}

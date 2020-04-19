@@ -1,0 +1,7 @@
+user.name: "{{ lookup('env', 'USER') }}"
+user.home: "{{ lookup('env', 'HOME') }}"
+vagrant_version: "1:2.2.3"
+kubectl_version: "*" # use '*' for latest version
+helm_version: "v2.12.3"
+vbox_install_path: "/mnt/c/Program Files/Oracle/VirtualBox"
+ssh_config_dir: "ssh/"

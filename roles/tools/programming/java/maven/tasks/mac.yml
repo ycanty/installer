@@ -1,0 +1,6 @@
+- name: Install maven
+  homebrew:
+    name:
+      - maven
+      - maven-completion
+    state: present

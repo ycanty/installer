@@ -1,0 +1,12 @@
+- name: Install handbrake GUI
+  homebrew_cask:
+    name:
+      - handbrake
+    state: present
+    install_options: force
+
+- name: Install handbrake CLI
+  homebrew:
+    name:
+      - handbrake
+    state: present

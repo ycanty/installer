@@ -1,0 +1,11 @@
+- name: Install wireshark CLI
+  homebrew:
+    name:
+      - wireshark
+    state: present
+
+- name: Install wireshark GUI
+  homebrew_cask:
+    name:
+      - wireshark
+    install_options: force

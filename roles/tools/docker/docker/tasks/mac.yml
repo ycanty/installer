@@ -1,0 +1,47 @@
+# Install docker and related container management tools
+
+- name: Install docker desktop for mac
+  homebrew_cask:
+    name: docker
+    state: present
+    install_options: force
+
+# We install the tools after docker-desktop to
+# ensure we get the latest version of these tools
+- name: Install command-line tools
+  homebrew:
+    name:
+      - docker-completion
+      - docker-compose-completion
+    state: present
+
+- name: brew link command-line tools
+  homebrew:
+    name:
+      - docker-completion
+      - docker-compose-completion
+    state: linked
+
+
+- name: Setup shell startup scripts
+  lineinfile:
+    path: "{{ item.path }}"
+    line: "{{ item.line }}"
+    regexp: "^.*{{ item.regexp }}\\s*$"
+    state: present
+    create: yes
+  with_items:
+    - { path: "{{ user.home }}/.bash_profile", regexp: "# docker-alias", line: "alias d=docker # docker-alias" }
+    - { path: "{{ user.home }}/.zshrc", regexp: "# docker-alias", line: "alias d=docker # docker-alias" }
+    - { path: "{{ user.home }}/.bash_profile", regexp: "# docker-compose-alias", line: "alias dco=docker-compose # docker-compose-alias" }
+    - { path: "{{ user.home }}/.zshrc", regexp: "# docker-compose-alias", line: "alias dco=docker-compose # docker-compose-alias" }
+
+- name: Setup auto-complete for aliases
+  lineinfile:
+    path: "{{ user.home }}/.bash_completion"
+    line: "complete -F _complete_alias {{ item }}"
+    state: present
+    create: yes
+  with_items:
+    - "d"
+    - "dco"

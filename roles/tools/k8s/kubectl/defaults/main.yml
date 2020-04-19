@@ -1,0 +1,2 @@
+kubectl_version: "*"   # '*' for latest
+kubectl_krew_plugins:

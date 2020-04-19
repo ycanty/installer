@@ -1,0 +1,36 @@
+# See: https://microk8s.io/#
+# Docs: https://github.com/ubuntu/microk8s
+
+# This is super important for the kubernetes DNS service to work.
+# We put the fix in a place where it survives a reboot.
+# See: https://github.com/ubuntu/microk8s/issues/266
+# The fix must be applied after a microk8s.start.
+- name: Fix ip tables for microk8s DNS service to work
+  cron:
+    name: "allow iptable forwarding"
+    special_time: reboot
+    job: "/snap/bin/microk8s.status --wait-ready && /sbin/iptables -P FORWARD ACCEPT"
+
+- name: Install microk8s
+  shell: snap install microk8s --classic
+
+- name: Add snap aliases to the main microk8s commands
+  shell: snap alias {{item.cmd}} {{item.alias}}
+  with_items:
+    - { cmd: "microk8s.istioctl", alias: "mi" }
+    - { cmd: "microk8s.kubectl", alias: "mk" }
+
+- name: Wait for microk8s to be ready
+  shell: microk8s.status --wait-ready
+  when: not(microk8s_enable_addons | trim == '')
+
+# Apply the fix so it works now, without needing a reboot
+- name: Apply the iptable fix
+  shell: /sbin/iptables -P FORWARD ACCEPT
+
+- name: Enable addons
+  shell: microk8s.enable {{ microk8s_enable_addons }}
+  when: not(microk8s_enable_addons | trim == '')
+
+- include_tasks: istio.yml
+  when: microk8s_enable_istio

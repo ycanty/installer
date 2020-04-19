@@ -1,0 +1,6 @@
+- name: Install subler
+  homebrew_cask:
+    name:
+      - subler
+    state: present
+    install_options: force

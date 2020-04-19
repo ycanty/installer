@@ -1,0 +1,39 @@
+- name: Add java ppa
+  apt_repository:
+    repo: ppa:webupd8team/java
+
+# Fix for this error: Failed to update apt cache: E:Repository ''http://ppa.launchpad.net/webupd8team/java/ubuntu bionic InRelease'' changed its ''Label'' value from ''Oracle Java (JDK) 8 / 9 Installer PPA'' to ''Oracle Java (JDK) 8 Installer PPA''
+- name: Allow release info change
+  shell: apt-get --allow-releaseinfo-change update
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= '18'
+
+- name: accept oracle license
+  debconf:
+    name: 'oracle-java8-installer'
+    question: 'shared/accepted-oracle-license-v1-1'
+    value: 'true'
+    vtype: "select"
+  changed_when: False
+
+- name: Install java package
+  apt:
+    name: oracle-java8-installer
+
+- name: Remove user's existing environment variables
+  become_user: "{{ user.name }}"
+  lineinfile:
+    path: /home/{{ user.name}}/.profile
+    state: absent
+    regexp: "{{ item }}"
+  with_items:
+    - "^export JAVA_HOME=.*"
+
+- name: Add user environment variables
+  become_user: "{{ user.name }}"
+  lineinfile:
+    path: /home/{{ user.name }}/.profile
+    line: "{{ item }}"
+    state: present
+    create: yes
+  with_items:
+    - export JAVA_HOME=/usr/lib/jvm/java-8-oracle

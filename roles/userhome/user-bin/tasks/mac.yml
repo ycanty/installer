@@ -1,0 +1,16 @@
+- name: Create user's bin directory
+  file:
+    path: "{{ user.home }}/bin"
+    state: directory
+    owner: "{{ user.name }}"
+
+- name: Setup user's bash_profile
+  lineinfile:
+    path: "{{ item.path }}"
+    line: "{{ item.line }}"
+    regexp: "^.*{{ item.regexp }}\\s*$"
+    state: present
+    create: yes
+  with_items:
+    - { regexp: "# home-bin", line: 'export PATH=${PATH}:"{{ user.home }}/bin" # home-bin', path: "{{ user.home }}/.bash_profile"}
+    - { regexp: "# home-bin", line: 'export PATH=${PATH}:"{{ user.home }}/bin" # home-bin', path: "{{ user.home }}/.zshrc"}

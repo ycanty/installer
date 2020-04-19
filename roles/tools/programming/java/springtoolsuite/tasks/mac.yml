@@ -1,0 +1,5 @@
+- name: Install spring tool suite
+  homebrew_cask:
+    name:
+      - springtoolsuite
+    state: present

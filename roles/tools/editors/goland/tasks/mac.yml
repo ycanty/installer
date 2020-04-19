@@ -1,0 +1,11 @@
+- name: Install goland
+  homebrew_cask:
+    name: goland
+    state: present
+    install_options: force
+
+- name: Install graphviz
+  homebrew:
+    name:
+        - graphviz  # for rendering plantuml diagrams in goland
+    state: present

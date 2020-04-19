@@ -1,0 +1,6 @@
+- name: Install vagrant
+  homebrew_cask:
+    name:
+      - vagrant
+    state: present
+    install_options: force

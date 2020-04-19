@@ -1,0 +1,6 @@
+- name: Install touchswitcher
+  homebrew_cask:
+    name:
+      - touchswitcher
+    state: present
+    install_options: force

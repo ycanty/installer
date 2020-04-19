@@ -1,0 +1,5 @@
+- name: Install xml-coreutils
+  homebrew:
+    name:
+      - xml-coreutils
+    state: present

@@ -1,0 +1,6 @@
+- name: Install adobe-digital-editions
+  homebrew_cask:
+    name:
+      - adobe-digital-editions
+    state: present
+    install_options: force

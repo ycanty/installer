@@ -1,0 +1,24 @@
+- name: Install google-cloud-sdk
+  homebrew_cask:
+    name:
+      - google-cloud-sdk
+    install_options: force
+
+- name: Install cloud_sql_proxy
+  get_url:
+    url: https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.amd64
+    dest: /usr/local/bin/cloud_sql_proxy
+    mode: ugo+x
+  become: yes
+  become_user: "root"
+
+- name: Setup environment for google cloud SDK
+  lineinfile:
+    path: "{{ item.path }}"
+    line: "{{ item.line }}"
+    regexp: "^.*{{ item.regexp }}\\s*$"
+    state: present
+    create: yes
+  with_items:
+    - { path: "{{ user.home }}/.bash_profile", regexp: "# google-cloud-sdk", line: "source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc' && source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc' # google-cloud-sdk" }
+    - { path: "{{ user.home }}/.zshrc", regexp: "# google-cloud-sdk", line: "source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc' && source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc' # google-cloud-sdk" }

@@ -1,0 +1,5 @@
+dependencies:
+  - role: tools/editors/atom
+  - role: tools/source-control/git
+  - role: tools/programming/javascript/nodejs
+  - role: tools/system/watchman

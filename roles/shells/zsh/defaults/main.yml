@@ -1,0 +1,3 @@
+zsh_set_as_default: false
+zsh_lang: "en_US.UTF-8"
+zsh_plugins: ""

@@ -1,0 +1,2 @@
+microk8s_enable_istio: False
+microk8s_enable_addons: "dns storage ingress metrics-server"

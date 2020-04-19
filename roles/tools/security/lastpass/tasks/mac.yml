@@ -1,0 +1,6 @@
+- name: Install lastpass
+  homebrew_cask:
+    name:
+      - lastpass
+    state: present
+    install_options: force

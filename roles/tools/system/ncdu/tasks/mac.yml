@@ -1,0 +1,5 @@
+- name: Install ncdu
+  homebrew:
+    name:
+      - ncdu
+    state: present

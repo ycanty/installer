@@ -1,0 +1,6 @@
+- name: Install geotag
+  homebrew_cask:
+    name:
+      - geotag
+    state: present
+    install_options: force

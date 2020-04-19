@@ -1,0 +1,26 @@
+- name: Add vagrant ppa
+  apt_repository:
+    repo: deb https://vagrant-deb.linestarve.com/ any main
+    state: present
+
+- name: Add vagrant apt key
+  apt_key:
+    keyserver: http://keyserver.ubuntu.com
+    id: AD319E0F7CFFA38B4D9F6E55CE3F3DE92099F7A4
+
+- name: Install vagrant
+  apt:
+   name: "vagrant={{ vagrant.version }}"
+   update_cache: yes
+   install_recommends: no
+
+- name: Set environment for vagrant on WSL
+  lineinfile:
+    path: "/etc/profile.d/vagrant.sh"
+    line: "{{ item }}"
+    state: present
+    create: yes
+  with_items:
+    - export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+    - export PATH="${PATH}:{{ vagrant.vbox_install_path }}"
+  when: ansible_kernel is match(".*Microsoft.*")

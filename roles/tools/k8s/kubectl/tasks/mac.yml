@@ -1,0 +1,61 @@
+# Install kubectl
+
+- name: Install command-line tools
+  homebrew:
+    name:
+      - kubectl
+      - kubectx
+      - kube-ps1
+    state: present
+
+- name: brew link command-line tools
+  shell: brew link --overwrite kubectl
+
+- name: Install kubectl krew plugin
+  shell: |
+    tmpdir="$(mktemp -d)"
+    cd "${tmpdir}"
+    curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/download/v0.3.2/krew.{tar.gz,yaml}"
+    tar zxvf krew.tar.gz
+    ./krew-"$(uname | tr '[:upper:]' '[:lower:]')_amd64" install --manifest=krew.yaml --archive=krew.tar.gz
+    rm -rf "${tmpdir}"
+  args:
+    creates: "{{ user.home }}/.krew"
+
+- name: Setup bash_profile
+  lineinfile:
+    path: "{{ item.path }}"
+    line: "{{ item.line }}"
+    regexp: "^.*{{ item.regexp }}\\s*$"
+    state: present
+    create: yes
+  with_items:
+    - { regexp: "# kubectl-alias", line: "alias k=kubectl # kubectl-alias", path: "{{ user.home }}/.bash_profile" }
+    - { regexp: "# kubectl-alias", line: "alias k=kubectl # kubectl-alias", path: "{{ user.home }}/.kshrc" }
+    - { regexp: "# kubectx-alias", line: "alias kc=kubectx # kubectx-alias", path: "{{ user.home }}/.bash_profile" }
+    - { regexp: "# kubectx-alias", line: "alias kc=kubectx # kubectx-alias", path: "{{ user.home }}/.kshrc" }
+    - { regexp: "# kube-ps1", line: "source \"/usr/local/opt/kube-ps1/share/kube-ps1.sh\" && PS1='$(kube_ps1)'$PS1 # kube-ps1", path: "{{ user.home }}/.bash_profile" }
+    - { regexp: "# kube-ps1", line: "source \"/usr/local/opt/kube-ps1/share/kube-ps1.sh\" && PS1='$(kube_ps1)'$PS1 # kube-ps1", path: "{{ user.home }}/.kshrc" }
+    - { regexp: "# krew", line: "export PATH={{ user.home }}/.krew/bin:${PATH} # krew", "{{ user.home }}/.bash_profile", path: "{{ user.home }}/.bash_profile" }
+    - { regexp: "# krew", line: "export PATH={{ user.home }}/.krew/bin:${PATH} # krew", "{{ user.home }}/.kshrc", path: "{{ user.home }}/.kshrc" }
+
+- name: Update krew index
+  shell: |
+    PATH={{ user.home }}/.krew/bin:${PATH}
+    kubectl krew update
+
+- name: Install krew plugins
+  shell: |
+    PATH={{ user.home }}/.krew/bin:${PATH}
+    kubectl krew install {{ item }}
+  with_items: "{{ kubectl_krew_plugins }}"
+
+- name: Setup auto-complete for aliases
+  lineinfile:
+    path: "{{ user.home }}/.bash_completion"
+    line: "complete -F _complete_alias {{ item }}"
+    state: present
+    create: yes
+  with_items:
+    - "k"
+    - "kc"

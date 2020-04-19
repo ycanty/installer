@@ -1,0 +1,65 @@
+- hosts: localhost
+  roles:
+    - userhome/user-bin
+    - shells/bash
+    - role: shells/zsh
+      zsh_plugins: "colored-man-pages gitignore golang kubectl mvn spring vagrant"
+    - utils/fonts
+
+    - tools/pictures/exiftool
+    - tools/pictures/adobe-dng-converter
+    - tools/pictures/geotag
+    - tools/pictures/xnviewmp
+
+    - tools/videos/ffmpeg
+    - tools/videos/handbrake
+    - tools/videos/subler
+
+    - tools/system/ncdu
+    - tools/system/watch
+    - tools/system/appcleaner
+    - tools/system/caffeine
+    - tools/system/funter
+    - tools/system/gfxcardstatus
+    - tools/system/touchswitcher
+    - tools/system/iterm
+
+    - tools/text/xml-coreutils
+
+    - tools/ebooks/adobe-digital-editions
+    - tools/ebooks/calibre
+    
+    - tools/db/db-browser-for-sqlite
+        
+    - tools/browsers/chrome
+    - tools/browsers/tor
+    
+    - tools/security/lastpass
+    
+    - tools/editors/libreoffice
+    - tools/editors/vscode
+    - tools/editors/intellij
+    - tools/editors/eclipse
+
+    - tools/music/musicbrainz-picard
+
+    - tools/docker/docker
+
+    - tools/k8s/kubectl
+    - tools/k8s/helm
+    
+    - tools/vm/vagrant
+    - tools/vm/virtualbox
+
+    - tools/source-control/git
+    - tools/source-control/hub
+    - tools/source-control/gh
+
+    - role: tools/programming/go
+      go_get_modules:
+        - "github.com/spf13/cobra/cobra"
+
+    - tools/programming/java/java
+    - tools/programming/java/springtoolsuite
+    - tools/programming/java/gradle
+    - tools/programming/java/maven

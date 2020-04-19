@@ -1,0 +1,6 @@
+- name: Install adobe-dng-converter
+  homebrew_cask:
+    name:
+      - adobe-dng-converter
+    state: present
+    install_options: force

@@ -1,0 +1,5 @@
+---
+groovy:
+  version: 2.4.15
+  install_dir: /usr/local/lib
+  symlink_bin_dir: /usr/local/bin

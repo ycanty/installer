@@ -1,0 +1,7 @@
+- name: Install db-browser-for-sqlite
+  homebrew_cask:
+    name:
+      - db-browser-for-sqlite
+    state: present
+    install_options: force
+  

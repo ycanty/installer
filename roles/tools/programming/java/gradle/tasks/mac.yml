@@ -1,0 +1,11 @@
+- name: Install gradle
+  homebrew:
+    name:
+      - gradle
+    state: present
+
+- name: Install gradle Quicklook plugin
+  homebrew_cask:
+    name:
+      - qlgradle
+    state: present

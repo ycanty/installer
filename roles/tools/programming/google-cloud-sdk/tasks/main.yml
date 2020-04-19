@@ -1,0 +1,12 @@
+- include_vars: vars/ubuntu.yml
+  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+
+- include_tasks: ubuntu.yml
+  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+
+- include_vars: vars/mac.yml
+  when: ansible_os_family == "Darwin"
+  
+- include_tasks: mac.yml
+  when: ansible_os_family == "Darwin"
+  

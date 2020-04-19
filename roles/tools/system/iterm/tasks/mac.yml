@@ -1,0 +1,6 @@
+- name: Install gfxcardstatus
+  homebrew_cask:
+    name:
+      - gfxcardstatus
+    state: present
+    install_options: force

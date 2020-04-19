@@ -1,0 +1,6 @@
+- name: Install funter
+  homebrew_cask:
+    name:
+      - funter
+    state: present
+    install_options: force

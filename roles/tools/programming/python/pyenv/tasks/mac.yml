@@ -1,0 +1,24 @@
+- name: Install pyenv tools
+  homebrew:
+    name:
+      - pyenv
+      - pyenv-which-ext
+      - pyenv-virtualenv
+    state: present
+
+- name: Add pyenv setup to user startup file
+  lineinfile:
+    path: "{{ item.path }}"
+    line: "{{ item.line }}"
+    regexp: "^.*{{ item.regexp }}\\s*$"
+    state: present
+    create: yes
+  with_items:
+    - { path: "{{ user.home }}/.bash_profile", regexp: "# pyenv-setup", line: 'eval "$(pyenv init -)" # pyenv-setup' }
+    - { path: "{{ user.home }}/.zshrc", regexp: "# pyenv-setup", line: 'eval "$(pyenv init -)" # pyenv-setup' }
+    - { path: "{{ user.home }}/.bash_profile", regexp: "# pyenv-install-fix", line: 'export CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" # pyenv-install-fix' } # as recommended by https://github.com/pyenv/pyenv/issues/1219#issuecomment-448658430
+    - { path: "{{ user.home }}/.zshrc", regexp: "# pyenv-install-fix", line: 'export CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" # pyenv-install-fix' } # as recommended by https://github.com/pyenv/pyenv/issues/1219#issuecomment-448658430
+
+- name: Install python versions
+  shell: CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -s {{ item }}
+  with_items: {{ pyenv.python_versions }}

@@ -1,0 +1,41 @@
+- name: Install a modern bash
+  homebrew:
+    name:
+      - bash
+      - bash-completion@2
+    state: present
+
+- name: Add modern bash to /etc/shells
+  lineinfile:
+    path: "/etc/shells"
+    line: "/usr/local/bin/bash"
+    state: present
+    create: yes
+  become: yes
+  become_user: "root"
+
+- name: Change user's default shell to modern bash
+  user:
+    name: "{{ user.name }}"
+    shell: /usr/local/bin/bash
+  become: yes
+  become_user: "root"
+  when: bash.set_as_default == true
+
+- name: Setup user's bash_profile
+  lineinfile:
+    path: "{{ user.home }}/.bash_profile"
+    line: "{{ item.line }}"
+    regexp: "^.*{{ item.regexp }}\\s*$"
+    state: present
+    create: yes
+  with_items:
+    - { regexp: "# source-bashrc", line: "[ -r ~/.bashrc ] && . ~/.bashrc # source-bashrc" }
+    - { regexp: "# source-bash-completion", line: "for C in $(brew --prefix)/etc/bash_completion.d/*; do [[ -r \"$C\" ]] && . \"$C\"; done && [[ -r \"$(brew --prefix)/etc/profile.d/bash_completion.sh\" ]] && . \"$(brew --prefix)/etc/profile.d/bash_completion.sh\" # source-bash-completion" }
+    - { regexp: "# colored-ls", line: "alias ls='ls -FG' # colored-ls"}
+    - { regexp: "# configure-less", line: "export LESS='-R -X -F' # configure-less"}
+
+- name: Install complete-alias bash utility
+  get_url:
+    url: https://raw.githubusercontent.com/cykerway/complete-alias/master/complete_alias
+    dest: "{{ user.home }}/.bash_completion"

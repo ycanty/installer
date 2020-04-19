@@ -1,0 +1,6 @@
+- name: Install calibre
+  homebrew_cask:
+    name:
+      - calibre
+    state: present
+    install_options: force

@@ -1,0 +1,22 @@
+# Setup KUBECONFIG management.
+- name: Create kube config dir
+  file:
+    dest: "{{ user.home }}/.kube/configs"
+    state: directory
+
+- name: Install kube config management script
+  copy:
+    src: "setup-kubeconfig.sh"
+    dest: "/usr/local/bin/"
+  become: yes
+  become_user: "root"
+
+- name: Setup kube config management script in startup script
+  lineinfile:
+    path: "{{ user.home }}/.bashrc"
+    line: "{{ item }}"
+    regexp: '^.*# setup-kubeconfig\s*$'
+    state: present
+    create: yes
+  with_items:
+    - "[[ -f \"/usr/local/bin/setup-kubeconfig.sh\" ]] && . \"/usr/local/bin/setup-kubeconfig.sh\" # setup-kubeconfig"

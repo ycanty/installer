@@ -1,0 +1,6 @@
+---
+# defaults file for fzf
+fzf:
+  path: "/home/{{ user.name }}/.fzf/"
+  owner: "{{ user.name }}"
+  update_git_install: no

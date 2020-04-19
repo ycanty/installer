@@ -1,0 +1,14 @@
+- name: Install helm
+  homebrew:
+    name: helm
+    state: present
+
+- name: Set zsh completion
+  lineinfile:
+    path: "{{ user.home }}/.zshrc"
+    line: "{{ item.line }}"
+    regexp: "^.*{{ item.regexp }}\\s*$"
+    state: present
+    create: yes
+  with_items:
+    - { regexp: "# source-zsh-completion", line: "[ $commands[helm] ] && source <(helm completion zsh) # source-zsh-completion" }

@@ -1,0 +1,65 @@
+- name: Install zsh
+  homebrew:
+    name:
+      - zsh
+      - zsh-completions
+    state: present
+
+- name: Add zsh to /etc/shells
+  lineinfile:
+    path: "/etc/shells"
+    line: "/usr/local/bin/zsh"
+    state: present
+    create: yes
+  become: yes
+  become_user: "root"
+
+- name: Change user's default shell to brew's zsh
+  user:
+    name: "{{ user.name }}"
+    shell: /usr/local/bin/zsh
+  become: yes
+  become_user: "root"
+  when: zsh_set_as_default == true
+
+- name: Download oh-my-zsh installation script
+  get_url:
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    dest: /usr/local/bin/zsh_install.sh
+    mode: ugo+x
+  become: yes
+  become_user: "root"
+
+- name: Run oh-my-zsh installer
+  shell: zsh_install.sh "" --unattended
+  args:
+    creates: "{{ user.home }}/.oh-my-zsh"
+
+- name: Determine brew prefix path
+  shell: brew --prefix
+  register: brew_prefix
+  changed_when: False
+
+- name: Fix permissions on {{ brew_prefix.stdout }}/share
+  file:
+    path: "{{ brew_prefix.stdout }}/share"
+    mode: go-w
+
+- name: Setup user's .zshrc
+  lineinfile:
+    path: "{{ user.home }}/.zshrc"
+    line: "{{ item.line }}"
+    regexp: "{{ item.regexp }}"
+    state: present
+    create: yes
+  with_items:
+    - { regexp: "^.*# set-language\\s*$", line: 'export LANG="{{ zsh_lang }}" # set-language' }
+    - { regexp: "^\\s*plugins=", line: 'plugins=({{ zsh_plugins }})' }
+    - { regexp: "^.*# configure-less\\s*$", line: "export LESS='-R -X -F' # configure-less"}
+
+# This forces re-creating the completion cache.
+# Useful if completion doesn't work for some commands.
+- name: Delete zcompdump file
+  file:
+    path: "{{ lookup('env', 'ZSH_COMPDUMP') }}"
+    state: absent

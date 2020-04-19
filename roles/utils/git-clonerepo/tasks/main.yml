@@ -1,0 +1,39 @@
+- name: Set git repos facts
+  set_fact:
+    git_repos_home: /home/{{ user.name }}/git
+
+- name: Create git repos home directory
+  become_user: "{{ user.name }}"
+  file:
+    path: "{{ git_repos_home }}"
+    state: directory
+
+- name: Clone gerrit source code repositories
+  become_user: "{{ user.name }}"
+  git:
+    repo: ssh://some.gerrit.server.com/{{ item.name }}
+    dest: "{{ git_repos_home }}/{{ item.dest }}"
+    update: no
+    accept_hostkey: yes
+    ssh_opts: "-o StrictHostKeyChecking=no"
+  with_items:
+    - "{{ git_repos }}"
+
+- name: Configure push url on git repositories
+  become_user: "{{ user.name }}"
+  git_config:
+    repo: "{{ git_repos_home }}/{{ item.dest }}"
+    scope: local
+    name: remote.origin.pushurl
+    value: ssh://gerrit.somewhere.com:29418/{{ item.name }}
+  with_items:
+    - "{{ git_repos }}"
+
+- name: Install git hooks
+  become_user: "{{ user.name }}"
+  get_url:
+    url: https://gerrit.somewhere.com/tools/hooks/commit-msg
+    dest: "{{ git_repos_home }}/{{ item.dest }}/.git/hooks/commit-msg"
+    mode: "ugo+x"
+  with_items:
+    - "{{ git_repos }}"

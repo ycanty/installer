@@ -1,0 +1,6 @@
+- name: Install xnviewmp
+  homebrew_cask:
+    name:
+      - xnviewmp
+    state: present
+    install_options: force

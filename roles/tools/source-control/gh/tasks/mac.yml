@@ -1,0 +1,4 @@
+- name: Install gh - github cli
+  homebrew:
+    name: github/gh/gh
+    state: present
