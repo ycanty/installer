@@ -3,3 +3,28 @@
     name:
       - eclipse-java
     state: present
+
+- name: Install libxml2 (needed for ansible xml task)
+  homebrew:
+    name:
+      - libxml2
+    state: present
+
+- name: Install lxml (needed for ansible xml task)
+  shell: easy_install lxml
+  become: yes
+  become_user: root
+
+# Eclipse doesn't work with openjdk 14.  Tell it to use version 8.
+- name: Configure eclipse PList
+  xml:
+    path: "/Applications/Eclipse Java.app/Contents/Info.plist"
+    xpath: /plist/dict[key="Eclipse"]/array
+    set_children:
+    - string: "-vm"
+    - string: "/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/bin/java"
+    - string: "-keyring"
+    - string: "~/.eclipse_keyring"
+    state: present
+  become: yes
+  become_user: root

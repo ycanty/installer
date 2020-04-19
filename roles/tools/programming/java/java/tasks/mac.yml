@@ -1,5 +1,10 @@
+- name: Add adoptopenjdk tap
+  homebrew_tap:
+    name: AdoptOpenJDK/openjdk
+
 - name: Install java
   homebrew_cask:
     name:
       - java
+      - adoptopenjdk8
     state: present
