@@ -11,8 +11,8 @@
   with_items:
     - { name: 'url."git@github.com:".insteadOf', value: "https://github.com/" }
     - { name: "credential.helper", value: "osxkeychain" }
-    - { name: "user.name", value: "{{ user.name }}" }
-    - { name: "user.email", value: "{{ user.email }}" }
+    - { name: "user.name", value: "{{ git_user_name }}" }
+    - { name: "user.email", value: "{{ git_user_email }}" }
     - { name: "core.autocrlf", value: "input" }
     - { name: "alias.co", value: "checkout" }
     - { name: "alias.st", value:  "status" }

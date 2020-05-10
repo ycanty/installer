@@ -51,7 +51,9 @@
     - tools/vm/vagrant
     - tools/vm/virtualbox
 
-    - tools/source-control/git
+    - role: tools/source-control/git
+      git_user_name: "Your git user name here"
+      git_user_email: "Your git user email here"
     - tools/source-control/hub
     - tools/source-control/gh
 

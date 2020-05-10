@@ -24,5 +24,5 @@
     value: "{{ item.value }}"
     scope: global
   with_items:
-    - { name: "user.name", value: "{{ user.name }}" }
-    - { name: "user.email", value: "{{ user.email }}" }
+    - { name: "user.name", value: "{{ git_user_name }}" }
+    - { name: "user.email", value: "{{ git_user_config }}" }

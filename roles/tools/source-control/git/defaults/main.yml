@@ -1,0 +1,2 @@
+git_user_name: "{{ user.name }}"
+git_user_email: "{{ user.email }}"
