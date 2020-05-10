@@ -19,7 +19,8 @@ I haven't recently used nor maintained the Ubuntu or WSL tasks.
 
 In the following text, knowledge of `ansible` is assumed.
 
-For setting up a mac, edit [main.yml](main.yml) and list the tools you want to use.
+For setting up a mac, create [main.yml](main.yml) and list the tools you want to use.
+You can rename `main.example.yml` to `main.yml` and use it as a starting point.
 There's one ansible role per tool.  Some are configurable through variables.
 
 Configuration variables for a tool by convention start with the name of the ansible role for
