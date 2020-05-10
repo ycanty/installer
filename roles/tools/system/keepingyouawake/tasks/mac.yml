@@ -1,0 +1,6 @@
+- name: Install keepingyouawake
+  homebrew_cask:
+    name:
+      - keepingyouawake
+    state: present
+    install_options: force
