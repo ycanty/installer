@@ -66,3 +66,5 @@
     - tools/programming/java/gradle
     - tools/programming/java/maven
     - tools/programming/javascript/nodejs
+
+    - tools/messaging/slack
