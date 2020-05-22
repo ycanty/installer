@@ -21,4 +21,4 @@
 
 - name: Install python versions
   shell: CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -s {{ item }}
-  with_items: {{ pyenv.python_versions }}
+  with_items: "{{ pyenv.python_versions }}"
