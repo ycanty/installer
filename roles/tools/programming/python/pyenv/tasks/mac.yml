@@ -14,8 +14,8 @@
     state: present
     create: yes
   with_items:
-    - { path: "{{ user.home }}/.bash_profile", regexp: "# pyenv-setup", line: 'eval "$(pyenv init -)" # pyenv-setup' }
-    - { path: "{{ user.home }}/.zshrc", regexp: "# pyenv-setup", line: 'eval "$(pyenv init -)" # pyenv-setup' }
+    - { path: "{{ user.home }}/.bash_profile", regexp: "# pyenv-setup", line: 'eval "$(pyenv init -)"; eval "$(pyenv virtualenv-init -)"# pyenv-setup' }
+    - { path: "{{ user.home }}/.zshrc", regexp: "# pyenv-setup", line: 'eval "$(pyenv init -)"; eval "$(pyenv virtualenv-init -)" # pyenv-setup' }
     - { path: "{{ user.home }}/.bash_profile", regexp: "# pyenv-install-fix", line: 'export CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" # pyenv-install-fix' } # as recommended by https://github.com/pyenv/pyenv/issues/1219#issuecomment-448658430
     - { path: "{{ user.home }}/.zshrc", regexp: "# pyenv-install-fix", line: 'export CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" # pyenv-install-fix' } # as recommended by https://github.com/pyenv/pyenv/issues/1219#issuecomment-448658430
 
