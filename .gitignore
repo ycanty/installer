@@ -3,3 +3,4 @@ setup.yaml
 .DS_Store
 .vagrant
 /main.yml
+.idea

@@ -6,6 +6,7 @@
       zsh_plugins: "colored-man-pages gitignore golang kubectl mvn spring vagrant"
     - utils/fonts
 
+    - tools/aws/aws-cli
     - tools/pictures/exiftool
     - tools/pictures/adobe-dng-converter
     - tools/pictures/geotag
