@@ -1,0 +1,7 @@
+- name: Install homebrew formulas
+  homebrew:
+    name: "{{homebrew_formulas}}"
+
+- name: Install homebrew casks
+  homebrew_cask:
+      name: "{{homebrew_casks}}"
