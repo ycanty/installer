@@ -1,0 +1,8 @@
+- name: Install a modern bash
+  homebrew:
+    name:
+      - fzf
+    state: present
+
+- name: Run fzf install script
+  shell: $(brew --prefix)/opt/fzf/install --all
