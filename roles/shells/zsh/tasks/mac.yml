@@ -53,6 +53,7 @@
     state: present
     create: yes
   with_items:
+    - { regexp: "^.*# bash-completion-support\\s*$", line: "autoload bashcompinit && bashcompinit # bash-completion-support"}
     - { regexp: "^.*# set-language\\s*$", line: 'export LANG="{{ zsh_lang }}" # set-language' }
     - { regexp: "^\\s*plugins=", line: 'plugins=({{ zsh_plugins }})' }
     - { regexp: "^.*# configure-less\\s*$", line: "export LESS='-R -X -F' # configure-less"}
