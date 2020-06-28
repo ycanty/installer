@@ -1,0 +1,23 @@
+- name: Add duckdns homebrew tap
+  homebrew_tap:
+    name: jzelinskie/duckdns
+
+- name: Install duckdns ip updater
+  homebrew:
+    name:
+      - duckdns
+    state: present
+
+- name: Set duckdns config
+  lineinfile:
+    path: "{{ user.home }}/.duckdns"
+    line: "{{ item.line }}"
+    regexp: "{{ item.regexp }}"
+    state: present
+    create: yes
+  with_items:
+  - { regexp: "^DOMAIN", line: 'DOMAIN="{{ duckdns_domain }}"' }
+  - { regexp: "^TOKEN", line: 'TOKEN="{{ duckdns_token }}"' }
+
+- name: Start duckdns ip updater service
+  shell: /usr/local/bin/brew services start duckdns
