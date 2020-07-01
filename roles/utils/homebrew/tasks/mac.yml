@@ -1,7 +1,9 @@
 - name: Install homebrew formulas
   homebrew:
     name: "{{homebrew_formulas}}"
+  when: (homebrew_formulas is defined) and (homebrew_formulas|length > 0)
 
 - name: Install homebrew casks
   homebrew_cask:
       name: "{{homebrew_casks}}"
+  when: (homebrew_casks is defined) and (homebrew_casks|length > 0)
