@@ -6,3 +6,14 @@
 
 - name: Run fzf install script
   shell: $(brew --prefix)/opt/fzf/install --all
+
+- name: Make ALT-C binding work
+  lineinfile:
+    path: "{{ item.path }}"
+    line: "{{ item.line }}"
+    regexp: "^.*{{ item.regexp }}\\s*$"
+    state: present
+    create: yes
+  with_items:
+    - { path: "{{ user.home }}/.bash_profile", regexp: "# fzf-alt-c", line: 'bindkey "ç" fzf-cd-widget # fzf-alt-c' }
+    - { path: "{{ user.home }}/.zshrc", regexp: "# fzf-alt-c", line: 'bindkey "ç" fzf-cd-widget # fzf-alt-c' }
