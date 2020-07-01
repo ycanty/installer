@@ -1,4 +1,4 @@
-- name: Install a modern bash
+- name: Install fzf
   homebrew:
     name:
       - fzf
