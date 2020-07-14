@@ -31,13 +31,13 @@
     create: yes
   with_items:
     - { regexp: "# kubectl-alias", line: "alias k=kubectl # kubectl-alias", path: "{{ user.home }}/.bash_profile" }
-    - { regexp: "# kubectl-alias", line: "alias k=kubectl # kubectl-alias", path: "{{ user.home }}/.kshrc" }
+    - { regexp: "# kubectl-alias", line: "alias k=kubectl # kubectl-alias", path: "{{ user.home }}/.zshrc" }
     - { regexp: "# kubectx-alias", line: "alias kc=kubectx # kubectx-alias", path: "{{ user.home }}/.bash_profile" }
-    - { regexp: "# kubectx-alias", line: "alias kc=kubectx # kubectx-alias", path: "{{ user.home }}/.kshrc" }
+    - { regexp: "# kubectx-alias", line: "alias kc=kubectx # kubectx-alias", path: "{{ user.home }}/.zshrc" }
     - { regexp: "# kube-ps1", line: "source \"/usr/local/opt/kube-ps1/share/kube-ps1.sh\" && PS1='$(kube_ps1)'$PS1 # kube-ps1", path: "{{ user.home }}/.bash_profile" }
-    - { regexp: "# kube-ps1", line: "source \"/usr/local/opt/kube-ps1/share/kube-ps1.sh\" && PS1='$(kube_ps1)'$PS1 # kube-ps1", path: "{{ user.home }}/.kshrc" }
+    - { regexp: "# kube-ps1", line: "source \"/usr/local/opt/kube-ps1/share/kube-ps1.sh\" && PS1='$(kube_ps1)'$PS1 # kube-ps1", path: "{{ user.home }}/.zshrc" }
     - { regexp: "# krew", line: "export PATH={{ user.home }}/.krew/bin:${PATH} # krew", "{{ user.home }}/.bash_profile", path: "{{ user.home }}/.bash_profile" }
-    - { regexp: "# krew", line: "export PATH={{ user.home }}/.krew/bin:${PATH} # krew", "{{ user.home }}/.kshrc", path: "{{ user.home }}/.kshrc" }
+    - { regexp: "# krew", line: "export PATH={{ user.home }}/.krew/bin:${PATH} # krew", "{{ user.home }}/.zshrc", path: "{{ user.home }}/.zshrc" }
 
 - name: Update krew index
   shell: |
